@@ -22,7 +22,7 @@ class OledDisplay:
         self.font = ImageFont.truetype(
             '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', 20)
 
-    def display(msg):
+    def display(self, msg):
         image = Image.new('1', (self.oled.width, self.oled.height))
         draw = ImageDraw.Draw(image)
         w, h = draw.textsize(msg, font=self.font)
