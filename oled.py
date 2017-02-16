@@ -26,7 +26,8 @@ class OledDisplay:
         image = Image.new('1', (self.oled.width, self.oled.height))
         draw = ImageDraw.Draw(image)
         w, h = draw.textsize(msg, font=self.font)
-        draw.text(((width-w)/2,(height-h)/2), msg, font=self.font, fill=1)
+        draw.text(((self.oled.width-w)/2,(self.oled.height-h)/2),
+                  msg, font=self.font, fill=1)
         self.oled.clear()
         self.oled.display()
         self.oled.image(image)
