@@ -1,0 +1,11 @@
+[Unit]
+Description=HX711 weighing scales service
+After=multi-user.target
+
+[Service]
+Type=idle
+ExecStart=/path/to/scales.py
+KillSignal=SIGINT
+
+[Install]
+WantedBy=multi-user.target
