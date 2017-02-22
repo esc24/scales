@@ -15,12 +15,12 @@ class OledDisplay:
         self.oled.begin()
         self.oled.clear()
         self.oled.display()
-
-        # Create blank image for drawing.
-        # Make sure to create image with mode '1' for 1-bit color.
-        image = Image.new('1', (self.oled.width, self.oled.height))
         self.font = ImageFont.truetype(
             '/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', 20)
+
+    def clear(self):
+        self.oled.clear()
+        self.oled.display()
 
     def display(self, msg):
         image = Image.new('1', (self.oled.width, self.oled.height))
@@ -28,7 +28,5 @@ class OledDisplay:
         w, h = draw.textsize(msg, font=self.font)
         draw.text(((self.oled.width-w)/2,(self.oled.height-h)/2),
                   msg, font=self.font, fill=1)
-        self.oled.clear()
-        self.oled.display()
         self.oled.image(image)
         self.oled.display()

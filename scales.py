@@ -38,6 +38,9 @@ def main():
             hx.power_up()
             time.sleep(1)
         except KeyboardInterrupt:
+            disp.display('Bye...')
+            time.sleep(1)
+            disp.clear()
             break
 
 
