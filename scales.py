@@ -4,12 +4,17 @@ import time
 
 from hx711 import HX711
 from oled import OledDisplay
+import paho.mqtt.publish as publish
+
 
 # Raspberry Pi pin configuration:
 # HX711 pins
 DATA_PIN = 9
 CLOCK_PIN = 11
 
+# MQTT
+MQTT_HOSTNAME = 'netbook.local'
+MQTT_TOPIC = 'restfulobs/weight'
 
 def main():
     hx = HX711(DATA_PIN, CLOCK_PIN)
@@ -27,6 +32,7 @@ def main():
 
             msg = '{:.1f} kg'.format(val)
             disp.display(msg)
+            publish.single(MQTT_TOPIC, msg, hostname=MQTT_HOSTNAME)
             print(val)
             hx.power_down()
             hx.power_up()
