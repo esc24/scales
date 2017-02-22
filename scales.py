@@ -16,6 +16,8 @@ CLOCK_PIN = 11
 # MQTT
 MQTT_HOSTNAME = 'netbook.local'
 MQTT_TOPIC = 'restfulobs/weight'
+MQTT_THRESH = 1.0  # Publish anything greather than +\- threshold
+
 
 def main():
     hx = HX711(DATA_PIN, CLOCK_PIN)
@@ -27,6 +29,7 @@ def main():
 
     disp = OledDisplay()
 
+    # Set up connection to MQTT server to publish data.
     client = mqtt.Client()
     try:
 	client.connect(MQTT_HOSTNAME)
@@ -36,19 +39,22 @@ def main():
     else:
         client.loop_start()  # context mgr is an option here
 
+    # Main event loop
     while True:
         try:
             val = hx.get_weight(5)
-
             msg = '{:.1f} kg'.format(val)
+            # Workaround to avoid negative zero
+            if msg == '-0.0 kg':
+                msg = '0.0 kg'
             disp.display(msg)
             #publish.single(MQTT_TOPIC, val, hostname=MQTT_HOSTNAME)
-            if client is not None:
+            if client is not None and abs(val) > MQTT_THRESH:
                 client.publish(MQTT_TOPIC, val)
             print(val)
             hx.power_down()
             hx.power_up()
-            time.sleep(1)
+            time.sleep(0.2)
         except KeyboardInterrupt:
             disp.display('Bye...')
             time.sleep(1)

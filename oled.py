@@ -22,6 +22,9 @@ class OledDisplay:
         self.oled.clear()
         self.oled.display()
 
+    def display_error(self, msg):
+        pass
+
     def display(self, msg):
         image = Image.new('1', (self.oled.width, self.oled.height))
         draw = ImageDraw.Draw(image)
